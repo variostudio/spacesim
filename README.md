@@ -1,3 +1,4 @@
 spacesim
 ========
-The Solar system simulator
+The Solar system simulator.
+This is requires PyGame module
