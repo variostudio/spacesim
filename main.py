@@ -1,5 +1,5 @@
 import pygame
-#from pygame import *
+import random
 from flyobj import *
 
 WIN_WIDTH = 800 
@@ -9,11 +9,12 @@ SPACE_COLOR = "#000022"
 SUN_COLOR = "yellow"
 
 R=5
+STAR_NUM = 400
+STAR_COLORS = ["blue", "brown", "grey", "magenta"]
 
 #Stop conditions
 CRASH_DIST = 10
 OUT_DIST = 1000
-
 
 def main():
 #    sun = FlyObject("Sun", 2000, 500, 320, -0.0, -0.0)
@@ -47,11 +48,16 @@ def main():
     #PyGame init
     pygame.init() 
     screen = pygame.display.set_mode(DISPLAY) 
-    pygame.display.set_caption("Solar Sim") 
+    pygame.display.set_caption("Space Dynamics") 
     
     #Space init
     bg = Surface((WIN_WIDTH,WIN_HEIGHT)) 
-    bg.fill(Color(SPACE_COLOR))     
+    bg.fill(Color(SPACE_COLOR))  
+    #Draw fixed stars   
+    for i in range(STAR_NUM):
+        draw.circle (bg, Color(random.sample(STAR_COLORS, 1)[0]), 
+            (random.randrange(WIN_WIDTH), random.randrange(WIN_HEIGHT)), 
+            0)
                     
     #Timer init                     
     timer = pygame.time.Clock()
@@ -65,7 +71,7 @@ def main():
 
     done = False
     while not done: 
-        timer.tick(30)
+        timer.tick(60)
         for e in pygame.event.get(): 
             if e.type == QUIT:
                 done = True
@@ -74,7 +80,6 @@ def main():
         r1 = sun.dist(earth)
         r2 = sun.dist(mars)
         r3 = earth.dist(mars)
-
 
         #Caluculate acceleration between objects
         sun.calcAccelTo(earth)

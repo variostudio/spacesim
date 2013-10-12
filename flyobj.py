@@ -1,7 +1,9 @@
 from pygame import *
 import math
 
-T = 1.0
+#Simulation precision. 
+#Lower value is better precision but lower simulation speed
+T = 0.3
 
 class FlyObject:
     mass = 0.0
@@ -40,11 +42,11 @@ class FlyObject:
         self.ay_new += other.mass * (other.y - self.y) / r**3
 
     def update(self):
-        self.vx += self.ax_new
-        self.vy += self.ay_new
+        self.vx += T * self.ax_new
+        self.vy += T * self.ay_new
 
-        self.x += self.vx
-        self.y += self.vy
+        self.x += T * self.vx
+        self.y += T * self.vy
 
         self.ax = self.ax_new
         self.ay = self.ay_new

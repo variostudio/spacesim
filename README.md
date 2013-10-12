@@ -1,4 +1,6 @@
 spacesim
 ========
 The Solar system simulator.
-This is requires PyGame module
+PyGame module is required
+
+NOTE: you can choose precision of simulation by editing T value in flyobj.py
