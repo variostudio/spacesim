@@ -2,10 +2,10 @@ import pygame
 import random
 from flyobj import *
 
-WIN_WIDTH = 800 
+WIN_WIDTH = 1000 
 WIN_HEIGHT = 640 
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT) 
-SPACE_COLOR = "#000022"
+SPACE_COLOR = "#000011"
 SUN_COLOR = "yellow"
 
 R=5
@@ -13,17 +13,17 @@ STAR_NUM = 400
 STAR_COLORS = ["blue", "brown", "grey", "magenta"]
 
 #Stop conditions
-CRASH_DIST = 10
+CRASH_DIST = 7
 OUT_DIST = 1000
 
 def main():
+    r_min = 9999.0
+    r_max = 0.0
+
 #    sun = FlyObject("Sun", 2000, 500, 320, -0.0, -0.0)
 #    earth = FlyObject("Earth", 200, 300.0, 320.0, 0.0, 2.0)
 #    mars = FlyObject("Mars", 200, 700.0, 320.0, 0.0, -2.0)
 
-    sun = FlyObject("Sun", 4000, 500, 320, -0.0, -0.0)
-    earth = FlyObject("Earth", 50, 100.0, 320.0, 0.1, 1.5)
-    mars = FlyObject("Mars", 30, 300.0, 320.0, 0.0, 1.9)
 
 
 #    sun = FlyObject("Sun", 4000, 400, 320, -0.0, -0.0)
@@ -43,12 +43,15 @@ def main():
 
 #    sun = FlyObject("Sun", 1000, 500, 320, -0.0, -0.2)
 #    earth = FlyObject("Earth", 500, 300.0, 320.0, 0.0, 1.7)
+    
+
 
 
     #PyGame init
     pygame.init() 
     screen = pygame.display.set_mode(DISPLAY) 
     pygame.display.set_caption("Space Dynamics") 
+    #pygame.display.toggle_fullscreen()
     
     #Space init
     bg = Surface((WIN_WIDTH,WIN_HEIGHT)) 
@@ -61,14 +64,28 @@ def main():
                     
     #Timer init                     
     timer = pygame.time.Clock()
-    
-    #Planet init
-    earth.initSurface(R, "blue", SPACE_COLOR)
+
+    #Solar system init
+    sun = FlyObject("Sun", 4000, 500, 320, -0.0, -0.0)
+    sun.initSurface(R*3, SUN_COLOR, SPACE_COLOR)
+
+    mars = FlyObject("Mars", 50, 200.0, 320.0, 0.1, 3.5)
     mars.initSurface(R, "red", SPACE_COLOR)
 
-    #Sun init
-    sun.initSurface(R*2, SUN_COLOR, SPACE_COLOR)
+    earth = FlyObject("Earth", 30, 300.0, 320.0, 0.0, 3.1)
+    earth.initSurface(R, "blue", SPACE_COLOR)
 
+    mercury = FlyObject("Mercury", 10, 400.0, 320.0, 0.0, 3.5)
+    mercury.initSurface(R, "white", SPACE_COLOR)
+
+    jup = FlyObject("Jupiter", 100, 50.0, 320.0, 0.0, -3.0)
+    jup.initSurface(R*2, "violet", SPACE_COLOR)
+    
+
+
+    system = [sun, mars, earth, mercury, jup]
+
+    
     done = False
     while not done: 
         timer.tick(60)
@@ -77,40 +94,35 @@ def main():
                 done = True
                 break        
         
-        r1 = sun.dist(earth)
-        r2 = sun.dist(mars)
-        r3 = earth.dist(mars)
+        for i in system:
+            for j in system:
+                if (i != j):
+                    dist = i.dist(j)
+                    i.calcAccelTo(j)
+                    r_min = min (r_min, dist)
+                    r_max = max (r_min, dist)
+   
 
-        #Caluculate acceleration between objects
-        sun.calcAccelTo(earth)
-        sun.calcAccelTo(mars)
-        earth.calcAccelTo(sun)
-        earth.calcAccelTo(mars)
-        mars.calcAccelTo(sun)
-        mars.calcAccelTo(earth)
+        for i in system:
+            i.update()
 
-        #Update object position
-        sun.update()
-        earth.update()
-        mars.update()
+
 
         #Put space to screen
         screen.blit(bg, (0, 0))      
 
         #Put each object to screen
-        sun.draw(screen)
-        earth.draw(screen)
-        mars.draw(screen)
-      
+        for i in system:
+            i.draw(screen)
+
         #update screen
         pygame.display.update()     
 
-        if r1 < CRASH_DIST or r2 < CRASH_DIST:
-#        if r1 < CRASH_DIST or r2 < CRASH_DIST or r3 < CRASH_DIST:
+        if r_min < CRASH_DIST:
             done = True
-            print("Crashed")
+            print("Collision detected")
             break
-        if r1 > OUT_DIST or r2 > OUT_DIST:
+        if r_max > OUT_DIST:
             done = True
             print("Out of system")
             break
