@@ -7,7 +7,7 @@ CRASH_DIST = 7
 OUT_DIST = 1000
 
 def main():
-    cfg = Config("main.ini")
+    cfg = Config()
 
     r_min = 9999.0
     r_max = 0.0
@@ -40,7 +40,7 @@ def main():
     #PyGame init
     pygame.init() 
     screen = pygame.display.set_mode(cfg.getDisplay()) 
-    pygame.display.set_caption("Space Dynamics") 
+    pygame.display.set_caption("Solar Mechanics") 
     #pygame.display.toggle_fullscreen()
     
     #Space init

@@ -1,4 +1,5 @@
 import configparser
+import argparse
 from flyobj import *
 
 class Config:
@@ -8,9 +9,18 @@ class Config:
     display = (0,0)
     star_colors = []
 
-    def __init__(self, fileName):
+    def __init__(self):
+        parser = argparse.ArgumentParser(description='Solar mechanics simulator')
+
+        parser.add_argument('-f', '--file', 
+            dest='file', 
+            default='main.ini',
+            help='configuration file')
+
+        args = parser.parse_args()
+
         self.config = configparser.ConfigParser()
-        self.config.read(fileName)
+        self.config.read(args.file)
 
         sys = self.config['System']
         self.width = int(sys.get("WIN_WIDTH", 800))
