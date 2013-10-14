@@ -1,22 +1,14 @@
 import pygame
 import random
 from flyobj import *
+from config import *
 
-WIN_WIDTH = 1000 
-WIN_HEIGHT = 640 
-DISPLAY = (WIN_WIDTH, WIN_HEIGHT) 
-SPACE_COLOR = "#000011"
-SUN_COLOR = "yellow"
-
-R=5
-STAR_NUM = 400
-STAR_COLORS = ["blue", "brown", "grey", "magenta"]
-
-#Stop conditions
 CRASH_DIST = 7
 OUT_DIST = 1000
 
 def main():
+    cfg = Config("main.ini")
+
     r_min = 9999.0
     r_max = 0.0
 
@@ -45,45 +37,27 @@ def main():
 #    earth = FlyObject("Earth", 500, 300.0, 320.0, 0.0, 1.7)
     
 
-
-
     #PyGame init
     pygame.init() 
-    screen = pygame.display.set_mode(DISPLAY) 
+    screen = pygame.display.set_mode(cfg.getDisplay()) 
     pygame.display.set_caption("Space Dynamics") 
     #pygame.display.toggle_fullscreen()
     
     #Space init
-    bg = Surface((WIN_WIDTH,WIN_HEIGHT)) 
-    bg.fill(Color(SPACE_COLOR))  
+    bg = Surface(cfg.getDisplay()) 
+    bg.fill(Color(cfg.getSpaceColor()))  
     #Draw fixed stars   
-    for i in range(STAR_NUM):
-        draw.circle (bg, Color(random.sample(STAR_COLORS, 1)[0]), 
-            (random.randrange(WIN_WIDTH), random.randrange(WIN_HEIGHT)), 
+    for i in range(cfg.getStarNumber()):
+        draw.circle (bg, Color(random.sample(cfg.getStarColors(), 1)[0]), 
+            (random.randrange(cfg.getWidth()), 
+             random.randrange(cfg.getHeight())), 
             0)
                     
     #Timer init                     
     timer = pygame.time.Clock()
 
     #Solar system init
-    sun = FlyObject("Sun", 4000, 500, 320, -0.0, -0.0)
-    sun.initSurface(R*3, SUN_COLOR, SPACE_COLOR)
-
-    mars = FlyObject("Mars", 50, 200.0, 320.0, 0.1, 3.5)
-    mars.initSurface(R, "red", SPACE_COLOR)
-
-    earth = FlyObject("Earth", 30, 300.0, 320.0, 0.0, 3.1)
-    earth.initSurface(R, "blue", SPACE_COLOR)
-
-    mercury = FlyObject("Mercury", 10, 400.0, 320.0, 0.0, 3.5)
-    mercury.initSurface(R, "white", SPACE_COLOR)
-
-    jup = FlyObject("Jupiter", 100, 50.0, 320.0, 0.0, -3.0)
-    jup.initSurface(R*2, "violet", SPACE_COLOR)
-    
-
-
-    system = [sun, mars, earth, mercury, jup]
+    system = cfg.getSystem()
 
     
     done = False
@@ -105,8 +79,6 @@ def main():
 
         for i in system:
             i.update()
-
-
 
         #Put space to screen
         screen.blit(bg, (0, 0))      
