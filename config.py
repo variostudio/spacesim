@@ -1,5 +1,6 @@
 import configparser
 import argparse
+import textwrap
 from flyobj import *
 
 class Config:
@@ -10,7 +11,14 @@ class Config:
     star_colors = []
 
     def __init__(self):
-        parser = argparse.ArgumentParser(description='Solar mechanics simulator')
+        parser = argparse.ArgumentParser(description='Solar mechanics simulator',
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            epilog=textwrap.dedent('''\
+                Keys used:
+                    q or ESC     = Exit
+                    p or SPACE   = Pause
+                    f            = Toggle fullscreen (if supported)
+            '''))
 
         parser.add_argument('-f', '--file', 
             dest='file', 
