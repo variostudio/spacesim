@@ -19,9 +19,6 @@ class FlyObject:
         self.vx = vx
         self.vy = vy
 
-        self.ax_new = 0.0
-        self.ay_new = 0.0
-
         print("{0}, ({1}, {2}) v=({3}, {4}), mass={5}"
              .format(name, x, y, vx, vy, mass))
 
@@ -38,21 +35,18 @@ class FlyObject:
     #Caluculates acceleration to other object
     def calcAccelTo(self, other):
         r = self.dist(other)
-        self.ax_new += other.mass * (other.x - self.x) / r**3
-        self.ay_new += other.mass * (other.y - self.y) / r**3
+        self.ax += other.mass * (other.x - self.x) / r**3
+        self.ay += other.mass * (other.y - self.y) / r**3
 
     def update(self):
-        self.vx += T * self.ax_new
-        self.vy += T * self.ay_new
+        self.vx += T * self.ax
+        self.vy += T * self.ay
 
         self.x += T * self.vx
         self.y += T * self.vy
 
-        self.ax = self.ax_new
-        self.ay = self.ay_new
-
-        self.ax_new = 0.0
-        self.ay_new = 0.0
+        self.ax = 0.0
+        self.ay = 0.0
 
     #Draw to screen
     def draw(self, screen):
