@@ -6,6 +6,8 @@ from config import *
 CRASH_DIST = 7
 OUT_DIST = 1000
 
+STEPS = 5
+
 def main():
     cfg = Config()
 
@@ -53,17 +55,19 @@ def main():
                     pygame.display.toggle_fullscreen()
 
         if not paused:
-            for i in system:
-                for j in system:
-                    if (i != j):
-                        dist = i.dist(j)
-                        i.calcAccelTo(j)
-                        r_min = min (r_min, dist)
-                        r_max = max (r_min, dist)
-   
 
-            for i in system:
-                i.update()
+            for st in range(STEPS):
+                for i in system:
+                    for j in system:
+                        if i.name != j.name:
+                            dist = i.dist(j)
+                            i.calcAccelTo(j)
+                            r_min = min (r_min, dist)
+                            r_max = max (r_min, dist)
+
+
+                for i in system:
+                    i.update()
 
             #Put space to screen
             screen.blit(bg, (0, 0))      
