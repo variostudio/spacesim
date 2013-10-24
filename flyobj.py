@@ -42,19 +42,19 @@ class FlyObject:
     def calcAccelTo(self, other):
         self.others.append((other.mass, other.x, other.y))
 
-    def fx(self, x):
+    def fx(self, local_x):
         a = 0
         for (mass, x, y) in self.others:
-            r = math.hypot(x - self.x, y - self.y)
-            a += mass * (x - self.x) / r**3
+            r = math.hypot(x - local_x, y - self.y)
+            a += mass * (x - local_x) / r**3
 
         return a
 
-    def fy(self, y):
+    def fy(self, local_y):
         a = 0
         for (mass, x, y) in self.others:
-            r = math.hypot(x - self.x, y - self.y)
-            a += mass * (y - self.y) / r**3
+            r = math.hypot(x - self.x, y - local_y)
+            a += mass * (y - local_y) / r**3
 
         return a
 
