@@ -3,7 +3,7 @@ import random
 from flyobj import *
 from config import *
 
-CRASH_DIST = 7
+CRASH_DIST = 5
 OUT_DIST = 1000
 
 STEPS = 5

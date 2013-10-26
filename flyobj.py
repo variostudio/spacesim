@@ -36,7 +36,8 @@ class FlyObject:
 
     #Distance to other F.O.
     def dist(self, other):
-        return math.hypot((self.x - other.x), (self.y - other.y))
+        return math.hypot((self.x + self.radius) - (other.x + other.radius),
+                           ((self.y + self.radius) - (other.y + other.radius)))
 
     #Caluculates acceleration to other object
     def calcAccelTo(self, other):
