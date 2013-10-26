@@ -36,8 +36,12 @@ class FlyObject:
 
     #Distance to other F.O.
     def dist(self, other):
+        '''
         return math.hypot((self.x + self.radius) - (other.x + other.radius),
                            ((self.y + self.radius) - (other.y + other.radius)))
+                           '''
+        return math.hypot((self.x - other.x),
+                          (self.y - other.y))
 
     #Caluculates acceleration to other object
     def calcAccelTo(self, other):
@@ -47,7 +51,7 @@ class FlyObject:
         a = 0
         for (mass, x, y) in self.others:
             r = math.hypot(x - local_x, y - self.y)
-            a += mass * (x - local_x) / r**3
+            a += mass * (x - local_x) / r ** 3
 
         return a
 
@@ -55,7 +59,7 @@ class FlyObject:
         a = 0
         for (mass, x, y) in self.others:
             r = math.hypot(x - self.x, y - local_y)
-            a += mass * (y - local_y) / r**3
+            a += mass * (y - local_y) / r ** 3
 
         return a
 
