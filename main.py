@@ -3,7 +3,7 @@ import random
 from flyobj import *
 from config import *
 
-CRASH_DIST = 5
+CRASH_DIST = 2
 OUT_DIST = 1000
 
 STEPS = 5
@@ -61,6 +61,7 @@ def main():
                     for j in system:
                         if i.name != j.name:
                             dist = i.dist(j)
+                            dist -= (i.radius + j.radius)
                             i.calcAccelTo(j)
                             r_min = min (r_min, dist)
                             r_max = max (r_min, dist)
