@@ -4,7 +4,7 @@ from flyobj import *
 from config import *
 
 CRASH_DIST = 2
-OUT_DIST = 1000
+OUT_DIST = 10000
 
 STEPS = 5
 
