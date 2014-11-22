@@ -12,6 +12,7 @@ class FlyObject:
     x, y, vx, vy, ax, ay = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     radius = 0
     surfaceColor = "black"
+    spaceColor = "black"
     others = []
     name = ''
 
@@ -25,11 +26,12 @@ class FlyObject:
         self.name = name
         self.others = []
 
-        print("{0}, ({1}, {2}) v=({3}, {4}), mass={5}"
-        .format(name, x, y, vx, vy, mass))
+        print("{0}, ({1}, {2}) v=({3}, {4}), mass={5}".format(name, x, y, vx, vy, mass))
 
     def initSurface(self, R, surfaceColor, spaceColor):
         self.radius = R
+        self.spaceColor = spaceColor
+        self.surfaceColor = surfaceColor
         self.image = Surface((R * 2, R * 2))
         self.image.fill(Color(spaceColor))
         draw.circle(self.image, Color(surfaceColor), (R, R), R)
@@ -99,3 +101,18 @@ class FlyObject:
     #Draw to screen
     def draw(self, screen):
         screen.blit(self.image, (int(self.x - self.radius), int(self.y - self.radius)))
+
+def join(object1, object2):
+    name = object1.name + " " + object2.name
+    mass = object1.mass + object2.mass
+
+    x = (object1.x * object1.mass + object2.x * object2.mass) / mass
+    y = (object1.y * object1.mass + object2.y * object2.mass) / mass
+
+    vx = (object1.vx * object1.mass + object2.vx * object2.mass) / mass
+    vy = (object1.vy * object1.mass + object2.vy * object2.mass) / mass
+
+    object3 = FlyObject(name, mass, x, y, vx, vy)
+    object3.initSurface(object1.radius + object2.radius, object1.surfaceColor, object1.spaceColor)
+
+    return object3

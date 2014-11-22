@@ -1,14 +1,18 @@
 import configparser
 import argparse
 import textwrap
-from flyobj import *
+
+from asteroidgenerator import *
+
 
 class Config:
     width = 0
     height = 0
     starts = 0
     display = (0,0)
+    stopOnCollision = True
     star_colors = []
+    useAsteroidGenerator = False
 
     def __init__(self):
         parser = argparse.ArgumentParser(description='Solar mechanics simulator',
@@ -42,6 +46,21 @@ class Config:
 
         self.space_color = sys.get("SPACE_COLOR")
 
+        self.onCollision = sys.get("ON_COLLISION", "stop")
+
+        #Asteroids if any
+        asteroidNumber = int(sys.get("ASTEROID_BELT_NUMBER", 0))
+        asteroidCenterX = int(sys.get("ASTEROID_BELT_X", 0))
+        asteroidCenterY = int(sys.get("ASTEROID_BELT_Y", 0))
+        asteroidMinRadius = int(sys.get("ASTEROID_BELT_RADIUS_MIN", 0))
+        asteroidMaxRadius = int(sys.get("ASTEROID_BELT_RADIUS_MAX", 0))
+        asteroidColor = sys.get("ASTEROID_BELT_COLOR", "white")
+
+        if (asteroidNumber > 0):
+            self.generator = AsteroidGenerator(asteroidCenterX, asteroidCenterY, asteroidMinRadius, asteroidMaxRadius, asteroidNumber, asteroidColor, self.space_color)
+            self.useAsteroidGenerator = True
+
+
 
     def getSystem(self):
         s = []
@@ -60,6 +79,8 @@ class Config:
                     self.space_color)
                 
                 s.append(obj)
+        if (self.useAsteroidGenerator):
+            self.generator.generate(s)
 
         return s
 

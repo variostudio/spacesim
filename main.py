@@ -3,16 +3,21 @@ import random
 from flyobj import *
 from config import *
 
-CRASH_DIST = 2
+CRASH_DIST = .5
 OUT_DIST = 10000
 
 STEPS = 5
 
+R_MIN_MAX = 99999.0
+
 def main():
     cfg = Config()
 
-    r_min = 9999.0
+    r_min = R_MIN_MAX
     r_max = 0.0
+
+    collapsedObject1 = ""
+    collapsedObject2 = ""
 
     #PyGame init
     pygame.init() 
@@ -63,9 +68,29 @@ def main():
                             dist = i.dist(j)
                             dist -= (i.radius + j.radius)
                             i.calcAccelTo(j)
-                            r_min = min (r_min, dist)
-                            r_max = max (r_min, dist)
+                            r_max = max(r_min, dist)
 
+                            if (dist < r_min):
+                                r_min = dist
+                                collapsedObject1 = i
+                                collapsedObject2 = j
+
+                #Join, crash or stop!
+                if r_min < CRASH_DIST:
+                    if cfg.onCollision == "stop":
+                        done = True
+                        print("Collision detected")
+                    elif cfg.onCollision == "remove":
+                        print("Collision detected {0}, {1}".format(collapsedObject1.name, collapsedObject2.name))
+                        system.remove(collapsedObject1)
+                        system.remove(collapsedObject2)
+                        r_min = R_MIN_MAX
+                    elif cfg.onCollision == "join":
+                        print("Join detected {0}, {1}".format(collapsedObject1.name, collapsedObject2.name))
+                        system.remove(collapsedObject1)
+                        system.remove(collapsedObject2)
+                        system.append(join(collapsedObject1, collapsedObject2))
+                        r_min = R_MIN_MAX
 
                 for i in system:
                     i.update()
@@ -78,12 +103,8 @@ def main():
                 i.draw(screen)
 
             #update screen
-            pygame.display.update()     
+            pygame.display.update()
 
-            if r_min < CRASH_DIST:
-                done = True
-                print("Collision detected")
-                break
             if r_max > OUT_DIST:
                 done = True
                 print("Out of system")
