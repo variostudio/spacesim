@@ -1,3 +1,4 @@
+from math import sqrt
 from xml.etree.ElementPath import _SelectorContext
 from pygame import *
 import math
@@ -10,7 +11,7 @@ T = 0.1
 class FlyObject:
     mass = 0.0
     x, y, vx, vy, ax, ay = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-    radius = 0
+    radius = 0.0
     surfaceColor = "black"
     spaceColor = "black"
     others = []
@@ -113,6 +114,7 @@ def join(object1, object2):
     vy = (object1.vy * object1.mass + object2.vy * object2.mass) / mass
 
     object3 = FlyObject(name, mass, x, y, vx, vy)
-    object3.initSurface(object1.radius + object2.radius, object1.surfaceColor, object1.spaceColor)
+    raduis = int(sqrt(mass) / 5)
+    object3.initSurface(raduis, object1.surfaceColor, object1.spaceColor)
 
     return object3
