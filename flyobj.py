@@ -114,7 +114,7 @@ def join(object1, object2):
     vy = (object1.vy * object1.mass + object2.vy * object2.mass) / mass
 
     object3 = FlyObject(name, mass, x, y, vx, vy)
-    raduis = int(sqrt(mass) / 5)
+    raduis = int((mass ** (1 / 3.0)) / 2)
     object3.initSurface(raduis, object1.surfaceColor, object1.spaceColor)
 
     return object3
