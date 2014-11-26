@@ -100,8 +100,8 @@ class FlyObject:
         self.others.clear()
 
     #Draw to screen
-    def draw(self, screen):
-        screen.blit(self.image, (int(self.x - self.radius), int(self.y - self.radius)))
+    def draw(self, screen, offsetX=0, offsetY=0):
+        screen.blit(self.image, (int(self.x - self.radius) + offsetX, int(self.y - self.radius) + offsetY))
 
 def join(object1, object2):
     name = object1.name + " " + object2.name

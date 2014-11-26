@@ -16,6 +16,9 @@ def main():
     r_min = R_MIN_MAX
     r_max = 0.0
 
+    offset_x = 0
+    offset_y = 0
+
     collapsedObject1 = ""
     collapsedObject2 = ""
 
@@ -26,13 +29,13 @@ def main():
 #    pygame.display.toggle_fullscreen()
     
     #Space init
-    bg = Surface(cfg.getDisplay()) 
+    bg = Surface(cfg.getDisplay())
     bg.fill(Color(cfg.getSpaceColor()))  
     #Draw fixed stars   
     for i in range(cfg.getStarNumber()):
         draw.circle (bg, Color(random.sample(cfg.getStarColors(), 1)[0]), 
-            (random.randrange(cfg.getWidth()), 
-             random.randrange(cfg.getHeight())), 
+            (random.randrange(bg.get_width()),
+             random.randrange(bg.get_height())),
             0)
                     
     #Timer init                     
@@ -58,6 +61,15 @@ def main():
                     paused = not paused
                 if e.key == K_f:
                     pygame.display.toggle_fullscreen()
+                if e.key == K_UP:
+                    offset_y += 10
+                if e.key == K_DOWN:
+                    offset_y -= 10
+                if e.key == K_LEFT:
+                    offset_x += 10
+                if e.key == K_RIGHT:
+                    offset_x -= 10
+
 
         if not paused:
 
@@ -96,11 +108,11 @@ def main():
                     i.update()
 
             #Put space to screen
-            screen.blit(bg, (0, 0))      
+            screen.blit(bg, (0, 0))
 
             #Put each object to screen
             for i in system:
-                i.draw(screen)
+                i.draw(screen, offset_x, offset_y)
 
             #update screen
             pygame.display.update()
