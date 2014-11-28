@@ -1,5 +1,6 @@
 from math import sqrt
 from xml.etree.ElementPath import _SelectorContext
+from numpy.core.numerictypes import obj2sctype
 from pygame import *
 import math
 
@@ -113,8 +114,12 @@ def join(object1, object2):
     vx = (object1.vx * object1.mass + object2.vx * object2.mass) / mass
     vy = (object1.vy * object1.mass + object2.vy * object2.mass) / mass
 
+    new_color = object1.surfaceColor
+    if object2.mass > object1.mass:
+        new_color = object2.surfaceColor
+
     object3 = FlyObject(name, mass, x, y, vx, vy)
-    raduis = int((mass ** (1 / 3.0)) / 2)
-    object3.initSurface(raduis, object1.surfaceColor, object1.spaceColor)
+    radius = int((mass ** (1 / 3.0)) / 2)
+    object3.initSurface(radius, new_color, object1.spaceColor)
 
     return object3
