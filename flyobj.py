@@ -1,6 +1,3 @@
-from math import sqrt
-from xml.etree.ElementPath import _SelectorContext
-from numpy.core.numerictypes import obj2sctype
 from pygame import *
 import math
 
@@ -16,6 +13,7 @@ class FlyObject:
     surfaceColor = "black"
     spaceColor = "black"
     others = []
+    image = ""
     name = ''
 
     #Creates new flying object like planet or star
@@ -101,8 +99,8 @@ class FlyObject:
         self.others.clear()
 
     #Draw to screen
-    def draw(self, screen, offsetX=0, offsetY=0):
-        screen.blit(self.image, (int(self.x - self.radius) + offsetX, int(self.y - self.radius) + offsetY))
+    def draw(self, screen, offset_x=0, offset_y=0):
+        screen.blit(self.image, (int(self.x - self.radius) + offset_x, int(self.y - self.radius) + offset_y))
 
 def join(object1, object2):
     name = object1.name + " " + object2.name
