@@ -1,4 +1,5 @@
 import pygame
+import os
 from pygame import *
 from flyobj import *
 
@@ -17,12 +18,15 @@ class Control:
     cfg = ""
     screen = ""
     bg = ""
+    screen_number = 0
 
     def __init__(self, timer, screen, background, cfg):
         self.timer = timer
         self.cfg = cfg
         self.screen = screen
         self.bg = background
+        self.save = False
+        self.video_folder = "video"
 
     def run(self):
         r_min = R_MIN_MAX
@@ -46,6 +50,8 @@ class Control:
                     done = True
                     break
                 if e.type == KEYDOWN:
+                    if e.key == K_s:
+                        self.save = not self.save
                     if e.key == K_q or e.key == K_ESCAPE:
                         done = True
                         break
@@ -106,6 +112,13 @@ class Control:
 
                 #update screen
                 pygame.display.update()
+
+                if self.save:
+                    if not os.path.exists(self.video_folder):
+                        os.makedirs(self.video_folder)
+
+                    pygame.image.save(self.screen, "{0}/screenshot{1}.jpeg".format(self.video_folder, self.screen_number))
+                    self.screen_number += 1
 
                 if r_max > OUT_DIST:
                     print("Out of system")
