@@ -113,7 +113,7 @@ def join(object1, object2):
     vy = (object1.vy * object1.mass + object2.vy * object2.mass) / mass
 
     new_color = object1.surfaceColor
-    if object2.mass > object1.mass:
+    if object2.mass >= object1.mass:
         new_color = object2.surfaceColor
 
     object3 = FlyObject(name, mass, x, y, vx, vy)
