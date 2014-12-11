@@ -49,7 +49,8 @@ class Config:
         self.onCollision = sys.get("ON_COLLISION", "stop")
 
         gens = sys.get("GENERATORS")
-        self.generators = gens.split(',')
+        if gens != None:
+            self.generators = gens.split(',')
 
 
 
