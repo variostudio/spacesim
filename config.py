@@ -79,7 +79,8 @@ class Config:
                                           int(self.config[i]["RADIUS_MAX"]),
                                           int(self.config[i]["BODY_NUMBER"]),
                                           self.config[i]["BODY_COLOR"],
-                                          self.space_color)
+                                          self.space_color,
+                                          float(self.config[i]["ROTATION"]))
 
             generator.generate(s)
 

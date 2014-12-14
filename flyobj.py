@@ -1,8 +1,8 @@
 from pygame import *
 import math
 
-#Simulation precision. 
-#Lower value is better precision but lower simulation speed
+# Simulation precision.
+# Lower value is better precision but lower simulation speed
 T = 0.1
 
 
@@ -16,7 +16,7 @@ class FlyObject:
     image = ""
     name = ''
 
-    #Creates new flying object like planet or star
+    # Creates new flying object like planet or star
     def __init__(self, name, mass, x, y, vx, vy):
         self.mass = mass
         self.x = x
@@ -36,12 +36,12 @@ class FlyObject:
         self.image.fill(Color(spaceColor))
         draw.circle(self.image, Color(surfaceColor), (R, R), R)
 
-    #Distance to other F.O.
+    # Distance to other F.O.
     def dist(self, other):
         return math.hypot((self.x - other.x),
                           (self.y - other.y))
 
-    #Caluculates acceleration to other object
+    # Calculates acceleration to other object
     def calcAccelTo(self, other):
         self.others.append((other.mass, other.x, other.y))
 
@@ -98,9 +98,10 @@ class FlyObject:
         self.calcY()
         self.others.clear()
 
-    #Draw to screen
+    # Draw to screen
     def draw(self, screen, offset_x=0, offset_y=0):
         screen.blit(self.image, (int(self.x - self.radius) + offset_x, int(self.y - self.radius) + offset_y))
+
 
 def join(object1, object2):
     name = object1.name + " " + object2.name
